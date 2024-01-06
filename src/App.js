@@ -7,6 +7,8 @@ import Services from './components/pages/Services';
 import Products from './components/pages/Products';
 import SignUp from './components/pages/SignUp';
 import About from './components/pages/About';
+import HistoryPage from './components/HistoryPage';
+import Preview from './components/Preview';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path='/products' element={<Products/>} />
         <Route path='/sign-up' element={<SignUp/>} />
         <Route path='/about' element={<About/>} />
+        <Route path='/preview' element={<Preview/>} />
+        <Route path='/historypage' element={<HistoryPage/>} />
       </Routes>
       </Router>
     </div>

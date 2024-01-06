@@ -1,0 +1,27 @@
+.preview-container {
+    display: flex;
+  }
+  
+  .left-pane {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image-preview {
+    width: 80%; /* Adjust the width as per your requirement */
+    max-width: 100%; /* Ensure the image doesn't exceed its original size */
+    height: auto; /* Maintain the aspect ratio */
+  }
+  
+  .right-pane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 200px;
+    padding-top: 200px; /* Optional: Add padding to the right pane */
+  }
+  
+  /* Rest of your existing CSS styles */
+  

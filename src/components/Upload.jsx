@@ -4,6 +4,7 @@ import './Upload.css';
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
 import { AiFillFileImage, AiOutlineFile } from 'react-icons/ai';
 import api from './api';
+import Result from './Result';
 
 export const Upload = () => {
   const [image, setImage] = useState(null);
@@ -11,10 +12,11 @@ export const Upload = () => {
   const [fileName, setFileName] = useState('No selected file');
   const [hdrName, setHdrName] = useState('No selected HDR file');
   const [token, setToken] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Thêm state mới
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
+  const [showResultComponent, setShowResultComponent] = useState(false);
 
   useEffect(() => {
-    // Lấy token từ Local Storage khi component được tạo
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
@@ -26,7 +28,6 @@ export const Upload = () => {
   const uploadFile = async () => {
     try {
       if (!token) {
-        // Nếu không có token, hiển thị thông báo và dừng hàm
         alert('Bạn cần đăng nhập');
         return;
       }
@@ -42,10 +43,20 @@ export const Upload = () => {
         },
       });
 
-      // Thực hiện các hành động cần thiết sau khi tải lên thành công
+      setUploadedImageUrl(URL.createObjectURL(image));
+
+      setShowResultComponent(true);
+
     } catch (error) {
       console.error(error);
     }
+  };
+  const handleConfirmResult = (x, y) => {
+    console.log('X:', x);
+    console.log('Y:', y);
+
+    setUploadedImageUrl(null);
+    setShowResultComponent(false);
   };
 
   return (
@@ -128,6 +139,15 @@ export const Upload = () => {
           />
         </span>
       </section>
+
+      {showResultComponent && uploadedImageUrl && (
+        <Result
+          imageUrl={uploadedImageUrl}
+          onXInputChange={(value) => console.log('X Input Changed:', value)}
+          onYInputChange={(value) => console.log('Y Input Changed:', value)}
+          onConfirm={handleConfirmResult}
+        />
+      )}
 
       <button onClick={uploadFile}>Upload</button>
     </main>

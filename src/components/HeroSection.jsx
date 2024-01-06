@@ -51,6 +51,7 @@ function HeroSection() {
           buttonStyle='btn--outline'
           buttonSize='btn--large'
         >
+          
           INSERT NOW
         </Button>
         <Button
@@ -58,6 +59,7 @@ function HeroSection() {
           buttonStyle='btn--primary'
           buttonSize='btn--large'
           onClick={handleHistoryClick}
+          to='/services'
         >
           HISTORY 
         </Button>
