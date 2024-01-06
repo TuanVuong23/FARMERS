@@ -1,16 +1,110 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  background: #f6f5f7;
+.auth-form-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  font-family: "Lato", Lato;
-  height: 100vh;
-  margin: -20px 0 50px;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  border: 2px solid #00563B;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 600px; 
+  margin: 30px auto;
+  background-color: #f2f2f2;
 }
+
+.sign-up {
+  background-color: #f2f2f2;
+}
+
+.sign-in {
+  background-color: #ffffff;
+}
+
+h2 {
+  font-size: 24px;
+  color: #00563B;
+  line-height: 1.5;
+}
+
+label {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px; 
+}
+
+.auth-button {
+  background-color: #00563B;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 8px 0; 
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.toggle-form-link {
+  color: #00563B;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1.5px;
+}
+
+.success-message {
+  border: 4px solid #00563B ; /* Điều chỉnh độ đậm và độ dày của viền */
+  padding: 100px; /* Điều chỉnh padding */
+  text-align: center;
+  max-width: 600px; /* Điều chỉnh chiều rộng tối đa */
+  margin: 70px auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 15px; /* Thêm viền cong */
+}
+
+.success-message p {
+  font-size: 25px; /* Điều chỉnh kích thước chữ */
+  margin: 15px 0; /* Điều chỉnh margin của đoạn văn bản */
+}
+
+.arrow-link {
+  cursor: pointer;
+  color: #00563B;
+  font-size: 18px; /* Điều chỉnh kích thước chữ */
+  text-decoration: none;
+  margin-top: 15px;
+}
+
+
+.arrow-link span {
+  margin-left: 5px;
+}
+
+.logout-button {
+  margin-top: 15px;
+  background-color: #00563B;
+  color: #fff;
+  border: none;
+  padding: 15px 30px; /* Điều chỉnh kích thước nút */
+  cursor: pointer;
+  border-radius: 10px; /* Thêm viền cong */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  font-size: 20px;;
+}
+
+.logout-button:hover {
+  background-color: green;
+  
+}
+

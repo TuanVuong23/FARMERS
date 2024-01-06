@@ -1,75 +1,102 @@
-import * as Components from './Components';
-import React, { useEffect } from 'react';
-import axios from 'axios'
+import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './styles.css';
+import api from './api';
 
-function Su() {
-    const [signIn, toggle] = React.useState(true);
+const AuthForm = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch("http://100.99.67.126:8081/endpoint");
-            const data = await response.json();
-            console.log(data);
-            // Xử lý dữ liệu ở đây
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
-    
-        fetchData();
-      }, []);
+  const handleAuth = async () => {
+    try {
+      if (isSignUp) {
+        const responseSignUp = await api.post('/user/register', {
+          username,
+          password,
+        });
+        console.log(responseSignUp.data);
+      } else {
+        const responseSignIn = await api.post('/user/login', {
+          username,
+          password,
+        });
+        console.log(responseSignIn.data);
+        const userToken = responseSignIn?.data?.token;
 
-     return(
-         <Components.Container>
-             <Components.SignUpContainer signinIn={signIn}>
-                 <Components.Form>
-                     <Components.Title>Create Account</Components.Title>
-                     <Components.Input type='text' placeholder='Name' />
-                     <Components.Input type='email' placeholder='Email' />
-                     <Components.Input type='password' placeholder='Password' />
-                     <Components.Button>Sign Up</Components.Button>
-                 </Components.Form>
-             </Components.SignUpContainer>
+        localStorage.setItem('token', userToken);
+        setToken(userToken);
+        setIsLoggedIn(true);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error('Tên người dùng đã tồn tại. Vui lòng chọn một tên khác.', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
+      } else {
+        toast.error('Đã xảy ra lỗi. Vui lòng thử lại sau.', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
+        console.error(error);
+      }
+    }
+  };
 
-             <Components.SignInContainer signinIn={signIn}>
-                  <Components.Form>
-                      <Components.Title>Sign in</Components.Title>
-                      <Components.Input type='email' placeholder='Email' />
-                      <Components.Input type='password' placeholder='Password' />
-                      <Components.Anchor href='#'>Forgot your password?</Components.Anchor>
-                      <Components.Button>Sign In</Components.Button>
-                  </Components.Form>
-             </Components.SignInContainer>
+  const toggleForm = () => {
+    setIsSignUp((prevIsSignUp) => !prevIsSignUp);
+  };
 
-             <Components.OverlayContainer signinIn={signIn}>
-                 <Components.Overlay signinIn={signIn}>
+  const handleLogout = () => {
+    const confirmLogout = window.confirm('Bạn có chắc chắn muốn đăng xuất?');
+    if (confirmLogout) {
+      localStorage.removeItem('token');
+      setToken(null);
+      setIsLoggedIn(false);
+    }
+  };
 
-                 <Components.LeftOverlayPanel signinIn={signIn}>
-                     <Components.Title>Welcome Back!</Components.Title>
-                     <Components.Paragraph>
-                         To keep connected with us please login with your personal info
-                     </Components.Paragraph>
-                     <Components.GhostButton onClick={() => toggle(true)}>
-                         Sign In
-                     </Components.GhostButton>
-                     </Components.LeftOverlayPanel>
+  return (
+    <div>
+      {isLoggedIn ? (
+        <div className="success-message">
+          <p>Bạn đã đăng nhập thành công!</p>
+          <div className="arrow-link" onClick={() => window.location.href = '/'}>
+            <span>&#8594;</span> Trang chủ
+          </div>
+          <button className="logout-button" onClick={handleLogout}>
+            Đăng xuất
+          </button>
+        </div>
+      ) : (
+        <div className={`auth-form-container ${isSignUp ? 'sign-up' : 'sign-in'}`}>
+          <h2>{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
+          <label>
+            Username:
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Password:
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </label>
+          <br />
+          <button className="auth-button" onClick={handleAuth}>
+            {isSignUp ? 'Sign Up' : 'Sign In'}
+          </button>
+          <br />
+          <p onClick={toggleForm} className="toggle-form-link">
+            {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+          </p>
+        </div>
+      )}
+      <ToastContainer />
+    </div>
+  );
+};
 
-                     <Components.RightOverlayPanel signinIn={signIn}>
-                       <Components.Title>Hello, User!</Components.Title>
-                       <Components.Paragraph>
-                           Create your account and start the journey with us
-                       </Components.Paragraph>
-                           <Components.GhostButton onClick={() => toggle(false)}>
-                               Sign Up
-                           </Components.GhostButton> 
-                     </Components.RightOverlayPanel>
- 
-                 </Components.Overlay>
-             </Components.OverlayContainer>
-
-         </Components.Container>
-     )
-}
-
-export default Su;
+export default AuthForm;

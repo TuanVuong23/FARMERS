@@ -1,12 +1,12 @@
 import React from 'react';
-import './SUstyle.css'
+import '../../App.css';
 import Su from '../Su';
 import Footer from '../Footer';
 
 function SignUp() {
   return (
     <>
-      <Su className="SU" />
+      <Su />
       <Footer />
     </>
   );

@@ -8,13 +8,13 @@
 .home,
 .services,
 .products,
-.sign-up {
+/*.sign-up {
   display: flex;
   height: 90vh;
   align-items: center;
   justify-content: center;
   font-size: 3rem;
-}
+}*/
 
 .services {
   background-image: url('../src/components/images/img2.jpg');
@@ -34,14 +34,14 @@
   font-size: 100px;
 }
 
-.sign-up {
+/*.sign-up {
   background-image: url('../src/components/images/img8.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   color: #fff;
   font-size: 100px;
-}
+}*/
 
 .about {
   background-image: url('../src/components/images/img8.jpg');

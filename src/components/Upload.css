@@ -37,3 +37,23 @@ form {
     justify-content: center;
     align-items: center;
 }
+
+.hdr-input-field {
+    display: none;
+  }
+  
+  .upload-row {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 5px;
+    background-color: #00563B;
+  }
+  
+  .upload-content {
+    display: flex;
+    align-items: center;
+    color: #fff;
+  }
