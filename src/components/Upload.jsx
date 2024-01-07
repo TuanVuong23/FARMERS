@@ -15,9 +15,14 @@ export const Upload = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
   const [showResultComponent, setShowResultComponent] = useState(false);
+  const [isUploadingHdr, setIsUploadingHdr] = useState(false);
+  const [uploadFinished, setUploadFinished] = useState(false);
+  const [showModal, setShowModal] = React.useState(false);
 
   useEffect(() => {
+
     const storedToken = localStorage.getItem('token');
+
     if (storedToken) {
       setToken(storedToken);
     } else {
@@ -33,7 +38,7 @@ export const Upload = () => {
       }
 
       const formData = new FormData();
-      formData.append('file', image);
+      formData.append('img', image);
       formData.append('hdr', hdr);
 
       await api.post('/file/upload', formData, {
@@ -47,29 +52,35 @@ export const Upload = () => {
 
       setShowResultComponent(true);
 
+      setIsUploadingHdr(false); // finish uploading
+      setUploadFinished(true); // set uploadFinished to true
+
+      
     } catch (error) {
       console.error(error);
     }
   };
-  const handleConfirmResult = (x, y) => {
-    console.log('X:', x);
-    console.log('Y:', y);
+  // const handleConfirmResult = (x, y) => {
+  //   console.log('X:', x);
+  //   console.log('Y:', y);
 
-    setUploadedImageUrl(null);
-    setShowResultComponent(false);
-  };
+  //   setUploadedImageUrl(null);
+  //   setShowResultComponent(false);
+  // };
 
   return (
     <main className="main">
+      <div className='content'> 
       {/* Phần upload ảnh */}
+      <div className="upload-image">
       <form
         action=""
-        onClick={() => document.querySelector('.input-field').click()}
+        onClick={() => document.querySelector('.input-img').click()}
       >
         <input
           type="file"
           accept="image/*"
-          className="input-field"
+          className="input-img"
           hidden
           onChange={({ target: { files } }) => {
             files[0] && setFileName(files[0].name);
@@ -88,68 +99,56 @@ export const Upload = () => {
           </>
         )}
       </form>
+      </div>
 
       {/* Phần upload HDR file */}
+      <div className="upload-hdr">
       <form
         action=""
-        onClick={() => document.querySelector('.hdr-input-field').click()}
+        onClick={() => document.querySelector('.input-hdr').click()}
       >
         <input
           type="file"
-          className="hdr-input-field"
+          accept=".hdr"
+          className="input-hdr"
           hidden
-          onChange={(e) => {
-            setHdr(e.target.files[0]);
-            setHdrName(e.target.files[0]?.name || 'No selected HDR file');
+          onChange={({ target: { files } }) => {
+            setIsUploadingHdr(true);
+            setTimeout(() => setIsUploadingHdr(false), 2000); // adjust delay as needed
+            files[0] && setHdrName(files[0].name);
+            if (files) {
+              setHdr(files[0]);
+              setUploadFinished(false); // set uploadFinished back to false
+            }
           }}
         />
 
-        {hdr ? (
-          <div className="upload-row">
-            <AiOutlineFile color="#00563B" />
-            <span className="upload-content">
-              {hdrName}
-              <MdDelete
-                onClick={() => {
-                  setHdr(null);
-                  setHdrName('No selected HDR file');
-                }}
-              />
-            </span>
-          </div>
-        ) : (
-          <div className="upload-row">
-            <AiOutlineFile color="#00563B" />
-            <span className="upload-content">
-              {hdrName}
-            </span>
-          </div>
-        )}
+      {hdr ? (
+        <p>{hdrName}</p>
+      ) : (
+        <>
+          <MdCloudUpload color="#00563B" size={60} />
+          <p>Browse HDR files to upload</p>
+        </>
+      )}
       </form>
-
-      <section className="upload-row">
-        <AiFillFileImage color="#00563B" />
-        <span className="upload-content">
-          {fileName}
-          <MdDelete
-            onClick={() => {
-              setFileName('No Selected File');
-              setImage(null);
-            }}
-          />
-        </span>
-      </section>
-
-      {showResultComponent && uploadedImageUrl && (
+        </div>
+      {/* {showResultComponent && uploadedImageUrl && (
         <Result
           imageUrl={uploadedImageUrl}
           onXInputChange={(value) => console.log('X Input Changed:', value)}
           onYInputChange={(value) => console.log('Y Input Changed:', value)}
           onConfirm={handleConfirmResult}
         />
-      )}
-
-      <button onClick={uploadFile}>Upload</button>
+      )} */}
+      </div>
+    <div> 
+    <button onClick={uploadFile} className="upload">Upload</button>
+    
+    {uploadFinished && <p>Upload finished!</p>}
+    </div>
+    
     </main>
+    
   );
 };
