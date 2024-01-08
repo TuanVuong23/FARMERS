@@ -1,26 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function HistoryPage() {
-  const [data, setData] = useState(null);
+const HistoryPage = () => {
+  const [apiData, setApiData] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('your-token-key'); // replace 'your-token-key' with your actual key
+    // Lấy token từ LocalStorage
+    const token = localStorage.getItem('token'); // Thay 'yourTokenKey' bằng key của token bạn lưu
 
-    fetch('http://100.99.67.126:8081/file/get/u', {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    // Gọi API khi component được tạo
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://100.99.67.126:8081/file/get/u', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching data from the API');
+        }
+
+        const responseData = await response.json();
+        setApiData(responseData);
+      } catch (error) {
+        console.error('Error:', error);
       }
-    })
-      .then(response => response.json())
-      .then(data => setData(data))
-      .catch(error => console.error(error));
-  }, []);
+    };
+
+    fetchData(); // Gọi hàm fetchData khi component được tạo
+  }, []); // [] để đảm bảo useEffect chỉ chạy một lần khi component được tạo
 
   return (
     <div>
-      {data ? JSON.stringify(data) : 'Loading...'}
+      <h2>History Page</h2>
+      {apiData ? (
+        <div>
+          <h3>Data from API:</h3>
+          <pre>{JSON.stringify(apiData, null, 2)}</pre>
+        </div>
+      ) : (
+        <p>Loading data...</p>
+      )}
+      {/* Các phần khác của trang HistoryPage bạn muốn hiển thị */}
     </div>
   );
-}
+};
 
 export default HistoryPage;

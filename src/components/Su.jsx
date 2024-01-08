@@ -38,7 +38,7 @@ const AuthForm = () => {
           autoClose: 5000,
         });
       } else {
-        toast.error('Đã xảy ra lỗi. Vui lòng thử lại sau.', {
+        toast.error('Tên đăng nhập hoặc mật khẩu sai', {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 5000,
         });

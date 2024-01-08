@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './Upload.css';
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
-import { AiFillFileImage, AiOutlineFile } from 'react-icons/ai';
 import api from './api';
 import Preview from './Preview';
 
@@ -17,7 +15,6 @@ export const Upload = () => {
   const [showResultComponent, setShowResultComponent] = useState(false);
   const [isUploadingHdr, setIsUploadingHdr] = useState(false);
   const [uploadFinished, setUploadFinished] = useState(false);
-  const [showModal, setShowModal] = React.useState(false);
   const [buttonPopup, setButtonPopup] = useState(false);
 
   useEffect(() => {
