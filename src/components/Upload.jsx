@@ -4,7 +4,7 @@ import './Upload.css';
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
 import { AiFillFileImage, AiOutlineFile } from 'react-icons/ai';
 import api from './api';
-import Result from './Result';
+import Preview from './Preview';
 
 export const Upload = () => {
   const [image, setImage] = useState(null);
@@ -18,6 +18,7 @@ export const Upload = () => {
   const [isUploadingHdr, setIsUploadingHdr] = useState(false);
   const [uploadFinished, setUploadFinished] = useState(false);
   const [showModal, setShowModal] = React.useState(false);
+  const [buttonPopup, setButtonPopup] = useState(false);
 
   useEffect(() => {
 
@@ -60,13 +61,7 @@ export const Upload = () => {
       console.error(error);
     }
   };
-  // const handleConfirmResult = (x, y) => {
-  //   console.log('X:', x);
-  //   console.log('Y:', y);
-
-  //   setUploadedImageUrl(null);
-  //   setShowResultComponent(false);
-  // };
+  
 
   return (
     <main className="main">
@@ -133,20 +128,17 @@ export const Upload = () => {
       )}
       </form>
         </div>
-      {/* {showResultComponent && uploadedImageUrl && (
-        <Result
-          imageUrl={uploadedImageUrl}
-          onXInputChange={(value) => console.log('X Input Changed:', value)}
-          onYInputChange={(value) => console.log('Y Input Changed:', value)}
-          onConfirm={handleConfirmResult}
-        />
-      )} */}
       </div>
-    <div> 
-    <button onClick={uploadFile} className="upload">Upload</button>
+    <div>
+    <button onClick={() => { uploadFile(); setButtonPopup(true); }} className="upload">Upload</button>
+
     
     {uploadFinished && <p>Upload finished!</p>}
     </div>
+
+    <Preview trigger={buttonPopup} setTrigger={setButtonPopup}>
+      <h2>Upload Finished!</h2>
+    </Preview>
     
     </main>
     

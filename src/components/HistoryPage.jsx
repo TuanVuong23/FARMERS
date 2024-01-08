@@ -1,11 +1,24 @@
-// Trong file HistoryPage.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const HistoryPage = () => {
+function HistoryPage() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('your-token-key'); // replace 'your-token-key' with your actual key
+
+    fetch('http://100.99.67.126:8081/file/get/u', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error(error));
+  }, []);
+
   return (
     <div>
-      <h2>History Page</h2>
-      {/* Thêm nội dung cho trang historypage ở đây */}
+      {data ? JSON.stringify(data) : 'Loading...'}
     </div>
   );
 }
