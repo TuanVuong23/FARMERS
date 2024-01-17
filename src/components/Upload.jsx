@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import './Upload.css';
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
@@ -71,7 +72,7 @@ export const Upload = () => {
       >
         <input
           type="file"
-          accept="image/*"
+          accept=".img"
           className="input-img"
           hidden
           onChange={({ target: { files } }) => {

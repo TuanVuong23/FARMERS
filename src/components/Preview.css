@@ -2,7 +2,8 @@
   position: fixed;
   top: 100;
   left: 0;
-  width: 100%;
+  right: 200;
+  width: 200%;
   height: 200vh;
   background-color: rgba(0, 0, 0, 0.2);
 

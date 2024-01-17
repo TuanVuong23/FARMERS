@@ -1,25 +1,59 @@
-import React from 'react'
-import "./Preview.css"
-import Predict from "./Predict"
-import { useState } from 'react'
+
+import React, { useState } from 'react';
+import "./Preview.css";
+import Predict from "./Predict";
+import api from './api';
 
 function Preview(props) {
-  const [ buttonPopup, setButtonPopup ] = useState(false);
+  const [buttonPopup, setButtonPopup] = useState(false);
+  const [previewBlob, setPreviewBlob] = useState(null);
 
-  return (props.trigger) ? (
+  const fetchPreviewData = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await api.post(
+        '/file/preview', 
+        {
+          "img_path": "D:\\img\\hyper_20220326_3cm.img",
+          "hdr_path": "D:\\img\\hyper_20220326_3cm.hdr",
+        },
+        {
+          headers: {
+            "Content-Type": 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          responseType: 'arraybuffer', // Sử dụng responseType để nhận ArrayBuffer từ axios
+        }
+      );
+
+      const blob = new Blob([response.data], { type: 'image/png' });
+      setPreviewBlob(blob);
+      setButtonPopup(true);
+    } catch (error) {
+      console.error('Error fetching preview data:', error);
+    }
+  }
+
+  return props.trigger ? (
     <div className="popup">
       <div className="popup-inner">
         <button className="close-btn" onClick={() => props.setTrigger(false)}></button>
-        <img src={props.image} alt="Success" />
-        { props.children }
-        <button onClick={() => { setButtonPopup(true); }} className="preview">Preview</button>
+        {props.children}
+        <button onClick={() => fetchPreviewData()} className="preview">Preview</button>
       </div>
 
       <Predict trigger={buttonPopup} setTrigger={setButtonPopup}>
         <h2>Here is your Preview picture</h2>
+        {/* Hiển thị dữ liệu previewBlob nếu có */}
+        {previewBlob && (
+          <div>
+            {/* Hiển thị hình ảnh từ Blob */}
+            <img src={URL.createObjectURL(previewBlob)} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+          </div>
+        )}
       </Predict>
     </div>
   ) : "";
 }
 
-export default Preview
+export default Preview;
