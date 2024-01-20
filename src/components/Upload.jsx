@@ -51,8 +51,8 @@ export const Upload = () => {
 
       setShowResultComponent(true);
 
-      setIsUploadingHdr(false); // finish uploading
-      setUploadFinished(true); // set uploadFinished to true
+      setIsUploadingHdr(false);
+      setUploadFinished(true); 
 
       
     } catch (error) {
@@ -107,11 +107,11 @@ export const Upload = () => {
           hidden
           onChange={({ target: { files } }) => {
             setIsUploadingHdr(true);
-            setTimeout(() => setIsUploadingHdr(false), 2000); // adjust delay as needed
+            setTimeout(() => setIsUploadingHdr(false), 5000); 
             files[0] && setHdrName(files[0].name);
             if (files) {
               setHdr(files[0]);
-              setUploadFinished(false); // set uploadFinished back to false
+              setUploadFinished(false); 
             }
           }}
         />

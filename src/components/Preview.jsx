@@ -22,7 +22,7 @@ function Preview(props) {
             "Content-Type": 'application/json',
             Authorization: `Bearer ${token}`
           },
-          responseType: 'arraybuffer', // Sử dụng responseType để nhận ArrayBuffer từ axios
+          responseType: 'arraybuffer', // 
         }
       );
 
@@ -44,7 +44,6 @@ function Preview(props) {
 
       <Predict trigger={buttonPopup} setTrigger={setButtonPopup}>
         <h2>Here is your Preview picture</h2>
-        {/* Hiển thị dữ liệu previewBlob nếu có */}
         {previewBlob && (
           <div>
             {/* Hiển thị hình ảnh từ Blob */}

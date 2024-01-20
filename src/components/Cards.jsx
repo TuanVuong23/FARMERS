@@ -10,13 +10,13 @@ function Cards() {
         <div className='cards__wrapper'>
           <ul className='cards__items'>
             <CardItem
-              src='images/background.png'
+              src={require('./images/img1.jpg')}
               text='Why do we need to save NPK'
               label='Savings'
               path='/services'
             />
             <CardItem
-              src='images/img-2.jpg'
+              src={require('./images/img1.jpg')}
               text='Why NPK are so important for Rice grow?'
               label='NPK'
               path='/services'
@@ -24,19 +24,19 @@ function Cards() {
           </ul>
           <ul className='cards__items'>
             <CardItem
-              src='images/img-3.jpg'
+              src={require('./images/img1.jpg')}
               text='Explore effect of Natri on growing a Rice'
               label='Natri'
               path='/services'
             />
             <CardItem
-              src='images/img-4.jpg'
+              src={require('./images/img1.jpg')}
               text='Explore effect of Kali on growing a Rice'
               label='Kali'
               path='/services'
             />
             <CardItem
-              src='images/img-8.jpg'
+              src={require('./images/img1.jpg')}
               text='Explore effect of Photpho on growing a Rice'
               label='Photpho'
               path='/services'
