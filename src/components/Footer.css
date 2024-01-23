@@ -20,8 +20,7 @@
   }
   
   .footer-subscription > p {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-      'Lucida Sans', Arial, sans-serif;
+    font-family:  sans-serif;
   }
   
   .footer-subscription-heading {
@@ -99,7 +98,7 @@
     font-size: 24px;
   }
   
-  .social-media {
+  .social-media-footer {
     max-width: 1000px;
     width: 100%;
   }
