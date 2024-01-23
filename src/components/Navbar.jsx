@@ -1,38 +1,51 @@
 import React, { useState } from "react";
-
-import "./Navbar.css";
 import { Link, NavLink } from "react-router-dom";
+import "./Navbar.css";
+import logo from './images/logo.png';
 
-export const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+const Navbar = () => {
+  const [menu, setMenu] = useState("home");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <nav>
-      <Link to="/" className="title">
-        Farmers
-      </Link>
-      <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
-        <span></span>
-        <span></span>
-        <span></span>
+    <nav className={`navbar ${isMenuOpen ? "open" : ""}`}>
+      <div className='nav-logo'>
+        <img src={logo} alt='' />
+        <p>Farmers</p> 
       </div>
-      <ul className={menuOpen ? "open" : ""}>
-      <li>
-          <NavLink to="/">Home</NavLink>
+      <div className={`menu-icon ${isMenuOpen ? "open" : ""}`} onClick={toggleMenu}>
+        <div className="bar"></div>
+        <div className="bar"></div>
+        <div className="bar"></div>
+      </div>
+      <ul className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
+        <li onClick={() => setMenu("home")}>
+          <Link to="/">Home</Link>
+          {menu === "home" ? <hr /> : <></>}
         </li>
-        <li>
-          <NavLink to="/About">About</NavLink>
+        <li onClick={() => setMenu("about")}>
+          <Link to="/About">About</Link>
+          {menu === "about" ? <hr /> : <></>}
         </li>
-        <li>
-          <NavLink to="/services">News</NavLink>
+        <li onClick={() => setMenu("news")}>
+          <Link to="/services">News</Link>
+          {menu === "news" ? <hr /> : <></>}
         </li>
-        <li>
-          <NavLink to="/products">Images</NavLink>
+        <li onClick={() => setMenu("images")}>
+          <Link to="/products">Images</Link>
+          {menu === "images" ? <hr /> : <></>}
         </li>
-        <li>
-          <NavLink to="/sign-up">Sign Up</NavLink>
-        </li>
+        <li className="login">
+        <NavLink to="/sign-up">
+          <button>Log In</button>
+        </NavLink>
+      </li>
       </ul>
+     
     </nav>
   );
 };

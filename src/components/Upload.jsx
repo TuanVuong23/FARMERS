@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './Upload.css';
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
 import api from './api';
-import Preview from './Preview';
+import SelectFile from './SelectFile';
 
 export const Upload = () => {
   const [image, setImage] = useState(null);
@@ -37,7 +37,7 @@ export const Upload = () => {
       }
 
       const formData = new FormData();
-      formData.append('img', image);
+      formData.append('zip', image);
       formData.append('hdr', hdr);
 
       await api.post('/file/upload', formData, {
@@ -72,7 +72,7 @@ export const Upload = () => {
       >
         <input
           type="file"
-          accept=".img"
+          accept=".zip"
           className="input-img"
           hidden
           onChange={({ target: { files } }) => {
@@ -134,9 +134,9 @@ export const Upload = () => {
     {uploadFinished && <p>Upload finished!</p>}
     </div>
 
-    <Preview trigger={buttonPopup} setTrigger={setButtonPopup}>
+    <SelectFile trigger={buttonPopup} setTrigger={setButtonPopup}>
       <h2>Upload Finished!</h2>
-    </Preview>
+    </SelectFile>
     
     </main>
     

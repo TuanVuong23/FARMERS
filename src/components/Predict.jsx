@@ -47,7 +47,6 @@ function Predict(props) {
         <button onClick={() => fetchPreviewData()}>Predict</button>
       </div>
       <Result trigger={buttonPopup} setTrigger={setButtonPopup}>
-        <h2> Here is your result!</h2>
         {previewBlob && (
           <div>
             {/* Hiển thị hình ảnh từ Blob */}
