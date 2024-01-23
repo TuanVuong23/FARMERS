@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import "./Preview.css";
-import Predict from "./Predict";
+import SelectArea from "./SelectArea";
 import api from './api';
 
 function Preview(props) {
@@ -14,8 +14,8 @@ function Preview(props) {
       const response = await api.post(
         '/file/preview', 
         {
-          "img_path": "D:\\img\\hyper_20220326_3cm.img",
-          "hdr_path": "D:\\img\\hyper_20220326_3cm.hdr",
+          "fileNameHDR": "hyper_20220326_3cm.hdr",
+          "fileNameIMG": "hyper_20220326_3cm.img"
         },
         {
           headers: {
@@ -30,27 +30,27 @@ function Preview(props) {
       setPreviewBlob(blob);
       setButtonPopup(true);
     } catch (error) {
-      console.error('Error fetching preview data:', error);
+      alert('Error fetching preview data');
     }
   }
 
   return (props.trigger) ? (
-    <div className="popup">
-      <div className="popup-inner">
-        <button className="close-btn" onClick={() => props.setTrigger(false)}></button>
+    <div className="popup-preview">
+      <div className="popup-inner-preview">
+        <button className="close-btn-preview" onClick={() => props.setTrigger(false)}></button>
         {props.children}
         <button onClick={() => fetchPreviewData()} className="preview">Preview</button>
       </div>
 
-      <Predict trigger={buttonPopup} setTrigger={setButtonPopup}>
+      <SelectArea trigger={buttonPopup} setTrigger={setButtonPopup}>
         <h2>Here is your Preview picture</h2>
         {previewBlob && (
           <div>
             {/* Hiển thị hình ảnh từ Blob */}
-            <img src={URL.createObjectURL(previewBlob)} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+            <img src={URL.createObjectURL(previewBlob)} alt="Preview" style={{ maxWidth: '100%', height: '100%' }} />
           </div>
         )}
-      </Predict>
+      </SelectArea>
     </div>
   ) : "";
 }

@@ -13,7 +13,7 @@ const HistoryPage = () => {
       const token = localStorage.getItem('token');
       const response = await fetch('http://100.99.67.126:8081/file/get/u', {
         method: 'GET',
-        headers: {
+        headers: {          
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },

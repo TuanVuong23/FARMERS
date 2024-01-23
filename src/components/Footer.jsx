@@ -53,7 +53,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <section className='social-media-footer'>
+      <section className='social-media'>
         <div className='social-media-wrap'>
           <div className='footer-logo'>
             <Link to='/' className='social-logo'>

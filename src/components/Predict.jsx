@@ -38,9 +38,9 @@ function Predict(props) {
   }
 
   return (props.trigger) ? (
-    <div className="popup">
-      <div className="popup-inner">
-        <button className="close-btn" onClick={() => props.setTrigger(false)}></button>
+    <div className="popup-predict">
+      <div className="popup-inner-predict">
+        <button className="close-btn-predict" onClick={() => props.setTrigger(false)}></button>
         { props.children }
         <input type="text" placeholder="Enter X" value={x} onChange={(e) => setX(e.target.value)} />
         <input type="text" placeholder="Enter Y" value={y} onChange={(e) => setY(e.target.value)} />

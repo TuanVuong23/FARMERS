@@ -1,9 +1,6 @@
 /*.active{
   background-color: #00563b;
 }*/
-*{
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
 
 .nav-logo {
   display: flex;
@@ -46,8 +43,8 @@ nav {
 }
 
 .nav-menu li a {
-  font-weight: bold;
-  font-size: 15px;
+  font-weight: lighter;
+  font-size: 1.2rem;
   display: block;
   text-decoration: none;
   color: #00563b;
@@ -136,7 +133,3 @@ nav {
     transform: rotate(45deg) translate(-5px, -6px);
   }
 }
-
-
-
-

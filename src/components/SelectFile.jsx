@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Preview from './Preview';
-/*import './SelectFile.css';*/
+import './SelectFile.css';
 
 function SelectFile(props) {
   const [buttonPopup, setButtonPopup] = useState(false);
@@ -17,7 +17,7 @@ function SelectFile(props) {
       return;
     }
 
-    fetch('http://100.99.67.126:8082/file/get/u', {
+    fetch('http://100.99.67.126:8081/file/get/u', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -49,16 +49,16 @@ function SelectFile(props) {
   };
 
   return props.trigger ? (
-    <div className="popup">
-      <div className="popup-inner">
-        <button className="close-btn" onClick={() => props.setTrigger(false)}></button>
+    <div className="popup-SF">
+      <div className="popup-inner-SF">
+      <button className="close-btn-SF" onClick={() => props.setTrigger(false)}></button>
         {props.children}
 
         {apiFetched ? (
-          <button onClick={() => setButtonPopup(true)}>Preview</button>
+          <button onClick={() => setButtonPopup(true)}>Confirm</button>
           
         ) : (
-          <button onClick={handleSelectFile}>Select File</button>
+          <button className="btnPre" onClick={handleSelectFile}>Select File</button>
         )}
 
         {/* Hiển thị danh sách fileId */}
@@ -83,10 +83,11 @@ function SelectFile(props) {
             ))}
           </ul>
         </div>
+        
       </div>
       
             <Preview trigger={buttonPopup} setTrigger={setButtonPopup}>
-              <h2>Ready to see your Preview?</h2>
+            
             </Preview>
           
     </div>

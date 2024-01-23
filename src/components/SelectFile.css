@@ -1,10 +1,10 @@
-.popup {
+.popup-SF {
     position: fixed;
-    top: 10;
+    top: 0;
     left: 0;
-    right: 200;
-    width: 200%;
-    height: 200vh;
+    right: 0;
+    width: 100%;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.2);
   
     display:flex;
@@ -12,22 +12,22 @@
     align-items: center;
   }
   
-  .popup-inner {
+  .popup-inner-SF {
     position: relative;
-    padding: 20px;
+    padding: 32px;
     width: 60%;
-    height: 30%;
+    height: 90%;
     background-color: white;
     box-sizing: border-box;
     overflow-y: auto;
     border-radius: 10px;
   }
   
-  .popup-inner .close-btn {
+  .popup-inner-SF .close-btn-SF {
     position: absolute;
     top: 20px;
     right: 20px;
-    background-color: #ccc;
+    background-color: #00563B;
     height: 30px;
     width: 30px;
     text-align: center;
@@ -36,20 +36,22 @@
     cursor: pointer;
   }
   
-  .popup-inner .close-btn:before, .popup-inner .close-btn:after {
+  .popup-inner-SF .close-btn-SF:before, .popup-inner-SF .close-btn-SF:after {
     content: ' ';
     position: absolute;
     top: 50%;
     left: 50%;
     width: 70%;
     height: 2px;
-    background-color: #00563B;
+    background-color: white;
   }
   
-  .popup-inner .close-btn:before {
+  .popup-inner-SF .close-btn-SF:before {
     transform: translate(-50%, -50%) rotate(45deg);
   }
   
-  .popup-inner .close-btn:after {
+  .popup-inner-SF .close-btn-SF:after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+  
+  
