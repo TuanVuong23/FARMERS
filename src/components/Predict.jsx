@@ -7,16 +7,16 @@ function Predict(props) {
   const [buttonPopup, setButtonPopup] = useState(false);
   const [x, setX] = useState('');
   const [y, setY] = useState('');
-  const [previewBlob, setPreviewBlob] = useState(null);
+  const [predictBlob, setPredictBlob] = useState(null);
 
-  const fetchPreviewData = async () => {
+  const fetchPredictData = async () => {
     const token = localStorage.getItem('token');
     try {
       const response = await api.post(
         '/file/predict', 
         {
-          "img_path": "D:\\img\\hyper_20220326_3cm.img",
-          "hdr_path": "D:\\img\\hyper_20220326_3cm.hdr",
+          "fileNameHDR": "hyper_20220326_3cm.hdr",
+          "fileNameIMG": "hyper_20220326_3cm.img",
           "x": "4000",
           "y": "4000"
         },
@@ -30,10 +30,10 @@ function Predict(props) {
       );
 
       const blob = new Blob([response.data], { type: 'image/png' });
-      setPreviewBlob(blob);
+      setPredictBlob(blob);
       setButtonPopup(true);
     } catch (error) {
-      console.error('Error fetching preview data:', error);
+      alert('Error fetching predict data:');
     }
   }
 
@@ -44,13 +44,13 @@ function Predict(props) {
         { props.children }
         <input type="text" placeholder="Enter X" value={x} onChange={(e) => setX(e.target.value)} />
         <input type="text" placeholder="Enter Y" value={y} onChange={(e) => setY(e.target.value)} />
-        <button onClick={() => fetchPreviewData()}>Predict</button>
+        <button onClick={() => fetchPredictData()}>Predict</button>
       </div>
       <Result trigger={buttonPopup} setTrigger={setButtonPopup}>
-        {previewBlob && (
+        {predictBlob && (
           <div>
             {/* Hiển thị hình ảnh từ Blob */}
-            <img src={URL.createObjectURL(previewBlob)} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+            <img src={URL.createObjectURL(predictBlob)} alt="Predict" style={{ maxWidth: '100%', height: 'auto' }} />
           </div>
         )}
         

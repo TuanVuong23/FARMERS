@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import './Upload.css';
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
@@ -19,7 +18,6 @@ export const Upload = () => {
   const [buttonPopup, setButtonPopup] = useState(false);
 
   useEffect(() => {
-
     const storedToken = localStorage.getItem('token');
 
     if (storedToken) {
@@ -53,92 +51,92 @@ export const Upload = () => {
 
       setIsUploadingHdr(false);
       setUploadFinished(true); 
-
       
     } catch (error) {
       console.error(error);
     }
   };
-  
 
   return (
     <main className="main">
+      <h2>Please Upload your Images below!</h2>
       <div className='content'> 
-      {/* Phần upload ảnh */}
-      <div className="upload-image">
-      <form
-        action=""
-        onClick={() => document.querySelector('.input-img').click()}
-      >
-        <input
-          type="file"
-          accept=".zip"
-          className="input-img"
-          hidden
-          onChange={({ target: { files } }) => {
-            files[0] && setFileName(files[0].name);
-            if (files) {
-              setImage(files[0]);
-            }
-          }}
-        />
+        {/* Phần upload ảnh */}
+        <div className="upload-image">
+          <form
+            action=""
+            onClick={() => document.querySelector('.input-img').click()}
+          >
+            <input
+              type="file"
+              accept=".zip"
+              className="input-img"
+              hidden
+              onChange={({ target: { files } }) => {
+                files[0] && setFileName(files[0].name);
+                if (files) {
+                  setImage(files[0]);
+                }
+              }}
+            />
+            {image ? (
+              <img src={URL.createObjectURL(image)} width={360} height={260} alt={fileName} />
+            ) : (
+              <>
+                <MdCloudUpload color="#00563B" size={60} />
+                <p>Browse Images to upload</p>
+              </>
+            )}
+          </form>
+        </div>
 
-        {image ? (
-          <img src={URL.createObjectURL(image)} width={360} height={260} alt={fileName} />
-        ) : (
-          <>
-            <MdCloudUpload color="#00563B" size={60} />
-            <p>Browse Images to upload</p>
-          </>
-        )}
-      </form>
-      </div>
-
-      {/* Phần upload HDR file */}
-      <div className="upload-hdr">
-      <form
-        action=""
-        onClick={() => document.querySelector('.input-hdr').click()}
-      >
-        <input
-          type="file"
-          accept=".hdr"
-          className="input-hdr"
-          hidden
-          onChange={({ target: { files } }) => {
-            setIsUploadingHdr(true);
-            setTimeout(() => setIsUploadingHdr(false), 5000); 
-            files[0] && setHdrName(files[0].name);
-            if (files) {
-              setHdr(files[0]);
-              setUploadFinished(false); 
-            }
-          }}
-        />
-
-      {hdr ? (
-        <p>{hdrName}</p>
-      ) : (
-        <>
-          <MdCloudUpload color="#00563B" size={60} />
-          <p>Browse HDR files to upload</p>
-        </>
-      )}
-      </form>
+        {/* Phần upload HDR file */}
+        <div className="upload-hdr">
+          <form
+            action=""
+            onClick={() => document.querySelector('.input-hdr').click()}
+          >
+            <input
+              type="file"
+              accept=".hdr"
+              className="input-hdr"
+              hidden
+              onChange={({ target: { files } }) => {
+                setIsUploadingHdr(true);
+                setTimeout(() => setIsUploadingHdr(false), 5000); 
+                files[0] && setHdrName(files[0].name);
+                if (files) {
+                  setHdr(files[0]);
+                  setUploadFinished(false); 
+                }
+              }}
+            />
+            {hdr ? (
+              <p>{hdrName}</p>
+            ) : (
+              <>
+                <MdCloudUpload color="#00563B" size={60} />
+                <p>Browse HDR files to upload</p>
+              </>
+            )}
+          </form>
         </div>
       </div>
-    <div>
-    <button onClick={() => { uploadFile(); setButtonPopup(true); }} className="upload">Upload</button>
 
-    
-    {uploadFinished && <p>Upload finished!</p>}
-    </div>
-
-    <SelectFile trigger={buttonPopup} setTrigger={setButtonPopup}>
-      <h2>Upload Finished!</h2>
-    </SelectFile>
-    
+      <div>
+        {/* Kiểm tra xem có token hay không trước khi hiển thị button và pop up */}
+        {token ? (
+          <>
+            <button onClick={() => { uploadFile(); setButtonPopup(true); }} className="upload">Upload</button>
+            {uploadFinished && <p>Upload finished!</p>}
+            <SelectFile trigger={buttonPopup} setTrigger={setButtonPopup}>
+              <h2>Upload Finished!</h2>
+            </SelectFile>
+          </>
+        ) : (
+          <p>You need to Log In first before using this feature</p>
+        )}
+      </div>
     </main>
-    
   );
 };

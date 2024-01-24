@@ -39,13 +39,13 @@ function Preview(props) {
       <div className="popup-inner-preview">
         <button className="close-btn-preview" onClick={() => props.setTrigger(false)}></button>
         {props.children}
-        <button onClick={() => fetchPreviewData()} className="preview">Preview</button>
+        <button onClick={() =>{ fetchPreviewData(); setButtonPopup(true) }} className="preview">Preview</button>
       </div>
 
       <SelectArea trigger={buttonPopup} setTrigger={setButtonPopup}>
-        <h2>Here is your Preview picture</h2>
         {previewBlob && (
           <div>
+            {/*<h2>Here is your Preview Image</h2>*/}
             {/* Hiển thị hình ảnh từ Blob */}
             <img src={URL.createObjectURL(previewBlob)} alt="Preview" style={{ maxWidth: '100%', height: '100%' }} />
           </div>
