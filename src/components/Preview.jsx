@@ -45,7 +45,7 @@ function Preview(props) {
       <SelectArea trigger={buttonPopup} setTrigger={setButtonPopup}>
         {previewBlob && (
           <div>
-            {/*<h2>Here is your Preview Image</h2>*/}
+            
             {/* Hiển thị hình ảnh từ Blob */}
             <img src={URL.createObjectURL(previewBlob)} alt="Preview" style={{ maxWidth: '100%', height: '100%' }} />
           </div>

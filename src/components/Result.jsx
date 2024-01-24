@@ -3,7 +3,7 @@ import "./Result.css"
 import { useState } from 'react';
 
 function Result(props) {
-    const [buttonPopup, setButtonPopup] = useState(false);
+    
 
   return (props.trigger) ? (
     <div className="popup">
