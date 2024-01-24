@@ -18,7 +18,9 @@ const AuthForm = () => {
           username,
           password,
         });
-        console.log(responseSignUp.data);
+        toast.success('Welcome New User!', { position: "top-right", autoClose: 3000 });
+    
+        
       } else {
         const responseSignIn = await api.post('/user/login', {
           username,
@@ -33,12 +35,12 @@ const AuthForm = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        toast.error('Tên người dùng đã tồn tại. Vui lòng chọn một tên khác.', {
+        toast.error('UserName already exsisted. Please choose another name!', {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 5000,
         });
       } else {
-        toast.error('Tên đăng nhập hoặc mật khẩu sai', {
+        toast.error('Incorrect username or password!', {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 5000,
         });
@@ -52,11 +54,12 @@ const AuthForm = () => {
   };
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm('Bạn có chắc chắn muốn đăng xuất?');
+    const confirmLogout = window.confirm('Do you really want to Log out?');
     if (confirmLogout) {
       localStorage.removeItem('token');
       setToken(null);
       setIsLoggedIn(false);
+      toast.success('Log Out successfully!', { position: "top-right", autoClose: 3000 });
     }
   };
 
@@ -64,12 +67,12 @@ const AuthForm = () => {
     <div>
       {isLoggedIn ? (
         <div className="success-message">
-          <p>Bạn đã đăng nhập thành công!</p>
+          <p>Sign In successfully! Welcome back</p>
           <div className="arrow-link" onClick={() => window.location.href = '/'}>
-            <span>&#8594;</span> Trang chủ
+            <span>&#8594;</span> Home
           </div>
           <button className="logout-button" onClick={handleLogout}>
-            Đăng xuất
+            Sign Out
           </button>
         </div>
       ) : (

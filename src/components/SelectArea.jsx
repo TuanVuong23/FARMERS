@@ -29,7 +29,7 @@ function SelectArea(props) {
   };
 
   const handlePredictButtonClick = () => {
-    // Additional logic for Predict button if needed
+   
     setButtonPopup(true);
   };
 
@@ -41,7 +41,7 @@ function SelectArea(props) {
     backgroundColor: 'red',
     top: `${confirmedY}px`,
     left: `${confirmedX}px`,
-    transform: 'translate(-50%, -50%)', // Center the dot on the coordinates
+    transform: 'translate(-50%, -50%)', 
   };
 
   const fetchPredictData = async () => {

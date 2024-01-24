@@ -22,7 +22,7 @@ function Preview(props) {
             "Content-Type": 'application/json',
             Authorization: `Bearer ${token}`
           },
-          responseType: 'arraybuffer', // 
+          responseType: 'arraybuffer', 
         }
       );
 

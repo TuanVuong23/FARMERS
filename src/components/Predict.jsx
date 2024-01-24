@@ -25,7 +25,7 @@ function Predict(props) {
             "Content-Type": 'application/json',
             Authorization: `Bearer ${token}`
           },
-          responseType: 'arraybuffer', // Sử dụng responseType để nhận ArrayBuffer từ axios
+          responseType: 'arraybuffer', 
         }
       );
 

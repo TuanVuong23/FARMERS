@@ -17,7 +17,7 @@ function SelectFile(props) {
       return;
     }
 
-    fetch('http://100.99.67.126:8081/file/get/u', {
+    fetch('http://100.99.67.126:8082/file/get/u', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ function SelectFile(props) {
           <button className="btnPre" onClick={handleSelectFile}>Select File</button>
         )}
 
-        {/* Hiển thị danh sách fileId */}
+        {/* Danh sách fileId */}
         <div>
           {fileIds.map(file => (
             <button
@@ -74,7 +74,7 @@ function SelectFile(props) {
           ))}
         </div>
 
-        {/* Hiển thị danh sách file đã chọn */}
+        {/* File đã chọn */}
         <div>
           <p>Selected Files:</p>
           <ul>

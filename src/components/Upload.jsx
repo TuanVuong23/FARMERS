@@ -124,7 +124,7 @@ export const Upload = () => {
       </div>
 
       <div>
-        {/* Kiểm tra xem có token hay không trước khi hiển thị button và pop up */}
+        {/*CHeck xem token */}
         {token ? (
           <>
             <button onClick={() => { uploadFile(); setButtonPopup(true); }} className="upload">Upload</button>

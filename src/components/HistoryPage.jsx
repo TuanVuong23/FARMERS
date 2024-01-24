@@ -11,7 +11,7 @@ const HistoryPage = () => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://100.99.67.126:8081/file/get/u', {
+      const response = await fetch('http://100.99.67.126:8082/file/get/u', {
         method: 'GET',
         headers: {          
           'Authorization': `Bearer ${token}`,
@@ -54,7 +54,7 @@ const HistoryPage = () => {
 
   const handleButtonClick = (item) => {
     console.log('Button clicked:', item);
-    fetchFileDetails(item.fileID); // Fetch file details when button is clicked
+    fetchFileDetails(item.fileID); 
   };
 
   const renderData = () => {
@@ -81,7 +81,7 @@ const HistoryPage = () => {
           <h3>Selected File Details:</h3>
           <p>File Name: {selectedFileData.fileName}</p>
           <p>Upload Date Time: {selectedFileData.uploadDateTime}</p>
-          {/* Add more details as needed */}
+          
         </div>
       );
     }
@@ -93,7 +93,7 @@ const HistoryPage = () => {
       <h2>History Page</h2>
       {apiData ? renderData() : <p>Loading data...</p>}
       {selectedFileData && renderFileDetails()}
-      {/* Các phần khác của trang HistoryPage bạn muốn hiển thị */}
+     
     </div>
   );
 };
