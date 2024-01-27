@@ -8,7 +8,7 @@ const AuthForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
   const handleAuth = async () => {
