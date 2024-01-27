@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Result from './Result';
-import './SelectArea.css'
-import api from './api'
+import './SelectArea.css';
+import api from './api';
 
 function SelectArea(props) {
   const [buttonPopup, setButtonPopup] = useState(false);
@@ -12,14 +12,13 @@ function SelectArea(props) {
   const [coordinatesConfirmed, setCoordinatesConfirmed] = useState(false);
   const [predictBlob, setPredictBlob] = useState(null);
 
-
   const handleConfirmButtonClick = () => {
     // Kiểm tra giá trị của X và Y
     const parsedX = parseFloat(xValue);
     const parsedY = parseFloat(yValue);
 
     if (isNaN(parsedX) || isNaN(parsedY) || parsedX > 8000 || parsedY > 8000) {
-      alert('Invalid X or Y value. Please enter a number <= 8000.');
+      alert('Giá trị X hoặc Y không hợp lệ. Vui lòng nhập một số <= 8000.');
       return;
     }
 
@@ -29,8 +28,7 @@ function SelectArea(props) {
   };
 
   const handlePredictButtonClick = () => {
-   
-    setButtonPopup(true);
+    fetchPredictData();
   };
 
   const redDotStyle = {
@@ -41,48 +39,52 @@ function SelectArea(props) {
     backgroundColor: 'red',
     top: `${confirmedY}px`,
     left: `${confirmedX}px`,
-    transform: 'translate(-50%, -50%)', 
+    transform: 'translate(-50%, -50%)',
   };
 
   const fetchPredictData = async () => {
     const token = localStorage.getItem('token');
-    try {
-      const response = await api.post(
-        '/file/predict', 
-        {
-          "fileNameHDR": "hyper_20220326_3cm.hdr",
-          "fileNameIMG": "hyper_20220326_3cm.img",
-          "x": "4000",
-          "y": "4000"
-        },
-        {
-          headers: {
-            "Content-Type": 'application/json',
-            Authorization: `Bearer ${token}`
+    if (props.filesForServer && props.filesForServer.fileNameHDR) {
+      try {
+        const response = await api.post(
+          '/file/predict',
+          {
+            fileNameHDR: props.filesForServer.fileNameHDR,
+            fileNameIMG: props.filesForServer.fileNameIMG,
+            x: confirmedX,
+            y: confirmedY,
           },
-          responseType: 'arraybuffer', 
-        }
-      );
-
-      const blob = new Blob([response.data], { type: 'image/png' });
-      setPredictBlob(blob);
-      setButtonPopup(true);
-    } catch (error) {
-      alert('Error fetching predict data:');
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            responseType: 'arraybuffer',
+          }
+        );
+  
+        const blob = new Blob([response.data], { type: 'image/png' });
+        setPredictBlob(blob);
+        setButtonPopup(true);
+      } catch (error) {
+        console.log('Lỗi khi lấy dữ liệu dự đoán:' + error.message);
+      }
+    } else {
+      console.log(props.filesForServer);
     }
-  }
+  };
 
-  return (props.trigger) ? (
+  return props.trigger ? (
     <div className="popup-SA">
       <div className="popup-inner-SA">
-        <h2>Here is your Preview</h2>
-        <div className="image-container" style={{ position: 'relative', width: '800px', height: '800px', backgroundColor: 'transparent', marginTop:'20px', marginBottom: '80px' }}>
+        <h2>Đây là Xem trước của bạn</h2>
+        <div className="image-container" style={{ position: 'relative', width: '800px', height: '800px', backgroundColor: 'transparent', marginTop: '20px', marginBottom: '80px' }}>
           {props.children}
           {confirmedX !== null && confirmedY !== null && (
             <div style={redDotStyle}></div>
           )}
         </div>
-        
+
         <div>
           <h3>Please input the coordinates values to Select a particular Area!</h3>
           <h4>Note: The Red dot is your Selected Area!</h4>
@@ -104,7 +106,7 @@ function SelectArea(props) {
           />
         </div>
         {coordinatesConfirmed ? (
-          <button onClick={() => {handlePredictButtonClick(); fetchPredictData(); setButtonPopup(true);}}>Predict</button>
+          <button onClick={handlePredictButtonClick}>Predict</button>
         ) : (
           <button onClick={handleConfirmButtonClick}>Confirm</button>
         )}
@@ -114,10 +116,9 @@ function SelectArea(props) {
         {predictBlob && (
           <div>
             {/* Hiển thị hình ảnh từ Blob */}
-            <img src={URL.createObjectURL(predictBlob)} alt="Predict" style={{ maxWidth: '100%', height: 'auto' }} />
+            <img src={URL.createObjectURL(predictBlob)} alt="Dự đoán" style={{ maxWidth: '100%', height: 'auto' }} />
           </div>
         )}
-        
       </Result>
     </div>
   ) : null;

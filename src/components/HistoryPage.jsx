@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import Preview from './Preview.jsx';
+import SelectArea from './SelectArea.jsx';
 
 const HistoryPage = () => {
   const [apiData, setApiData] = useState(null);
-  const [selectedFileData, setSelectedFileData] = useState(null);
+  const [buttonPopup, setButtonPopup] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [filesForServer, setFilesForServer] = useState({
+    fileNameHDR: '',
+    fileNameIMG: '',
+  });
 
   useEffect(() => {
     fetchData();
@@ -11,11 +18,11 @@ const HistoryPage = () => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://100.99.67.126:8082/file/get/u', {
+      const response = await fetch('http://100.99.67.126:8081/file/get/u', {
         method: 'GET',
-        headers: {          
+        headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
       });
 
@@ -30,31 +37,27 @@ const HistoryPage = () => {
     }
   };
 
-  const fetchFileDetails = async (fileID) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://100.99.67.126:8081/file/get/u/${fileID}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-      });
+  const handleFileClick = (file) => {
+    const isSelected = selectedFiles.includes(file);
 
-      if (!response.ok) {
-        throw new Error('Error fetching file details from the API');
-      }
-
-      const fileDetails = await response.json();
-      setSelectedFileData(fileDetails);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    setSelectedFiles((prevSelectedFiles) =>
+      isSelected
+        ? prevSelectedFiles.filter((selectedFile) => selectedFile !== file)
+        : [...prevSelectedFiles, file]
+    );
   };
 
-  const handleButtonClick = (item) => {
-    console.log('Button clicked:', item);
-    fetchFileDetails(item.fileID); 
+  const handleConfirm = () => {
+    if (selectedFiles.length === 2) {
+      const [fileNameHDR, fileNameIMG] = selectedFiles.map((file) => file.fileName);
+      setFilesForServer({
+        fileNameHDR,
+        fileNameIMG,
+      });
+      setButtonPopup(true);
+    } else {
+      console.error('Please select exactly 2 files.');
+    }
   };
 
   const renderData = () => {
@@ -62,11 +65,16 @@ const HistoryPage = () => {
       <div>
         <h3>Data from API:</h3>
         <ul>
-          {apiData.map((item, index) => (
+          {apiData.map((file, index) => (
             <li key={index}>
-              <button onClick={() => handleButtonClick(item)}>
-                {item.fileName} - {item.uploadDateTime}
-              </button>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedFiles.includes(file)}
+                  onChange={() => handleFileClick(file)}
+                />
+                {file.fileName} - {file.uploadDateTime}
+              </label>
             </li>
           ))}
         </ul>
@@ -74,26 +82,25 @@ const HistoryPage = () => {
     );
   };
 
-  const renderFileDetails = () => {
-    if (selectedFileData) {
-      return (
-        <div>
-          <h3>Selected File Details:</h3>
-          <p>File Name: {selectedFileData.fileName}</p>
-          <p>Upload Date Time: {selectedFileData.uploadDateTime}</p>
-          
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <div>
       <h2>History Page</h2>
       {apiData ? renderData() : <p>Loading data...</p>}
-      {selectedFileData && renderFileDetails()}
-     
+
+      <div>
+        <button onClick={handleConfirm}>Confirm</button>
+        <div>
+          <p>Selected Files:</p>
+          <ul>
+            {selectedFiles.map((file) => (
+              <li key={file.fileName}>{file.fileName}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <Preview trigger={buttonPopup} setTrigger={setButtonPopup} filesForServer={filesForServer}>
+      </Preview>
+      <SelectArea filesForServer={filesForServer} />
     </div>
   );
 };

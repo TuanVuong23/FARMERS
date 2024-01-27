@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Preview from './Preview';
 import './SelectFile.css';
+import api from './api';
 
 function SelectFile(props) {
   const [buttonPopup, setButtonPopup] = useState(false);
   const [fileIds, setFileIds] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [apiFetched, setApiFetched] = useState(false);
-  
+  const [filesForServer, setFilesForServer] = useState({
+    fileNameHDR: '',
+    fileNameIMG: ''
+  });
 
   const handleSelectFile = () => {
     const token = localStorage.getItem('token');
@@ -17,7 +21,7 @@ function SelectFile(props) {
       return;
     }
 
-    fetch('http://100.99.67.126:8082/file/get/u', {
+    fetch('http://100.99.67.126:8081/file/get/u', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -48,22 +52,40 @@ function SelectFile(props) {
     );
   };
 
+  const handleConfirm = () => {
+    const [fileNameHDR, fileNameIMG] = selectedFiles;
+    setFilesForServer({
+      fileNameHDR,
+      fileNameIMG
+    });
+
+    setButtonPopup(true);
+
+    if (props.onFilesForServerChange) {
+      props.onFilesForServerChange({
+        fileNameHDR,
+        fileNameIMG
+      });
+    }
+  };
+
   return props.trigger ? (
     <div className="popup-SF">
       <div className="popup-inner-SF">
-      <button className="close-btn-SF" onClick={() => props.setTrigger(false)}></button>
+        <button className="close-btn-SF" onClick={() => props.setTrigger(false)}></button>
         {props.children}
 
         {apiFetched ? (
-          <button onClick={() => setButtonPopup(true)}>Confirm</button>
-          
+          <button onClick={handleConfirm}>Confirm</button>
         ) : (
-          <button className="btnPre" onClick={handleSelectFile}>Select File</button>
+          <button className="btnPre" onClick={handleSelectFile}>
+            Select File
+          </button>
         )}
 
         {/* Danh sách fileId */}
         <div>
-          {fileIds.map(file => (
+          {fileIds.map((file) => (
             <button
               key={file.fileName}
               onClick={() => handleFileClick(file.fileName)}
@@ -74,22 +96,18 @@ function SelectFile(props) {
           ))}
         </div>
 
-        {/* File đã chọn */}
         <div>
           <p>Selected Files:</p>
           <ul>
-            {selectedFiles.map(fileName => (
+            {selectedFiles.map((fileName) => (
               <li key={fileName}>{fileName}</li>
             ))}
           </ul>
         </div>
-        
       </div>
-      
-            <Preview trigger={buttonPopup} setTrigger={setButtonPopup}>
-            
-            </Preview>
-          
+
+      <Preview trigger={buttonPopup} setTrigger={setButtonPopup} filesForServer={filesForServer}>
+      </Preview>
     </div>
   ) : null;
 }
