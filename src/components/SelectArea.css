@@ -7,7 +7,7 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.2);
 
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -15,8 +15,8 @@
 .popup-inner-SA {
   position: relative;
   padding: 32px;
-  width: 60%;
-  height: 90%;
+  width: 80%; /* Adjust width as needed */
+  height: 80%; /* Adjust height as needed */
   background-color: white;
   box-sizing: border-box;
   overflow-y: auto;
@@ -25,23 +25,25 @@
 
 .popup-inner-SA .close-btn-SA {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: #00563B;
-  height: 30px;
-  width: 30px;
-  text-align: center;
-  line-height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
+    top: 20px;
+    right: 20px;
+    background-color: #00563B;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+  
 }
 
-.popup-inner-SA .close-btn-SA:before, .popup-inner-SA .close-btn-SA:after {
+.popup-inner-SA .close-btn-SA:before,
+.popup-inner-SA .close-btn-SA:after {
   content: ' ';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 70%;
+  width: 50%;
   height: 2px;
   background-color: white;
 }
@@ -54,3 +56,52 @@
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+/* Additional styles for image container and input fields */
+
+
+.popup-inner-SA > div {
+  /* Adjust styles for the container containing input fields and buttons */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.popup-inner-SA label {
+  margin-bottom: 8px;
+}
+
+.popup-inner-SA input {
+  margin-bottom: 16px;
+}
+
+.popup-inner-SA button {
+  padding: 12px 25px;
+  background-color: #00563B;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  font-family: 'Roboto', sans-serif;
+}
+
+.popup-inner-SA button:hover {
+  background-color: #45a049;
+}
+
+.loading-spinner {
+  border: 8px solid white;
+  border-top: 8px solid #00563B;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

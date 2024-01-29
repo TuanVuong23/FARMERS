@@ -65,7 +65,7 @@ const Navbar = () => {
           ) : (
             <li className="login">
               <NavLink to="/sign-up">
-                <button>Log In</button>
+                <button>Sign In</button>
               </NavLink>
             </li>
           )}

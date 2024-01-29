@@ -1,29 +1,30 @@
-.popup-preview {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.2);
+.popup-pre {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
   
-    display:flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .popup-inner-preview {
+  .popup-inner-pre {
     position: relative;
     padding: 32px;
-    width: 60%;
-    height: 90%;
+    width: 40%;
+    height: 50%;
     background-color: white;
     box-sizing: border-box;
     overflow-y: auto;
     border-radius: 10px;
   }
   
-  .popup-inner-preview .close-btn-preview {
+  .popup-inner-pre .close-btn-pre {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -36,7 +37,7 @@
     cursor: pointer;
   }
   
-  .popup-inner-preview .close-btn-preview:before, .popup-inner-preview .close-btn-preview:after {
+  .popup-inner-pre .close-btn-pre:before, .popup-inner-pre .close-btn-pre:after {
     content: ' ';
     position: absolute;
     top: 50%;
@@ -46,12 +47,28 @@
     background-color: white;
   }
   
-  .popup-inner-preview .close-btn-preview:before {
+  .popup-inner-pre .close-btn-pre:before {
     transform: translate(-50%, -50%) rotate(45deg);
   }
   
-  .popup-inner-preview .close-btn-preview:after {
+  .popup-inner-pre .close-btn-pre:after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
   
   
+  .loading-spinner {
+    border: 8px solid white;
+    border-top: 8px solid #00563B;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+
+

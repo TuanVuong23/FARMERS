@@ -34,7 +34,8 @@ const HistoryPage = () => {
       setApiData(responseData);
     } catch (error) {
       console.error('Error:', error);
-    }
+      console.log('filesForServer');
+    } 
   };
 
   const handleFileClick = (file) => {
@@ -55,7 +56,6 @@ const HistoryPage = () => {
         fileNameIMG,
       });
       setButtonPopup(true);
-      // You may want to perform any other actions here, such as submitting to the server.
     } else {
       console.error('Please select exactly 2 files.');
     }
@@ -71,7 +71,6 @@ const HistoryPage = () => {
           padding: '20px 300px', // Increase the padding as needed on both sides
         }}
       >
-        <h3>Data from API:</h3>
         <ul style={{ listStyle: 'none', padding: 0, textAlign: 'center' }}>
           {apiData.map((file, index) => (
             <li
@@ -108,23 +107,33 @@ const HistoryPage = () => {
   
   return (
     <div>
-      <h2>History Page</h2>
+      <h1 style={{ textAlign: 'center', marginBottom: '20px', background: 'white' }}>HISTORY PAGE</h1>
       {apiData ? renderData() : <p>Loading data...</p>}
 
-      {/* Select File and Confirm */}
       <div>
-        <button onClick={handleConfirm}>Confirm</button>
-        <div>
-          <p>Selected Files:</p>
-          <ul>
-            {selectedFiles.map((file) => (
-              <li key={file.fileName}>{file.fileName}</li>
-            ))}
-          </ul>
-        </div>
+      <button
+  style={{
+    marginTop: '40px', // Increase this from 20px to 40px
+    display: 'block', 
+    margin: '0 auto', 
+    padding: '12px 25px',
+    backgroundColor: '#00563B', 
+    color: 'white', 
+    fontSize: '18px', 
+    border: 'none', 
+    borderRadius: '10px', 
+    cursor: 'pointer', 
+    transition: 'background-color 0.3s, box-shadow 0.2s', 
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)', 
+    fontFamily: "'Roboto', sans-serif", 
+  }}
+  onClick={handleConfirm}
+>
+  Confirm
+</button>
+        
       </div>
       <Preview trigger={buttonPopup} setTrigger={setButtonPopup} filesForServer={filesForServer}>
-        {/* Pass state filesForServer to the Preview component */}
       </Preview>
       <SelectArea filesForServer={filesForServer} />
     </div>

@@ -11,38 +11,58 @@ function SelectArea(props) {
   const [confirmedY, setConfirmedY] = useState(null);
   const [coordinatesConfirmed, setCoordinatesConfirmed] = useState(false);
   const [predictBlob, setPredictBlob] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [inputMode, setInputMode] = useState(true);
 
   const handleConfirmButtonClick = () => {
-    // Kiểm tra giá trị của X và Y
     const parsedX = parseFloat(xValue);
     const parsedY = parseFloat(yValue);
 
     if (isNaN(parsedX) || isNaN(parsedY) || parsedX > 8000 || parsedY > 8000) {
-      alert('Giá trị X hoặc Y không hợp lệ. Vui lòng nhập một số <= 8000.');
+      alert('Invalid X or Y value. Please enter a number <= 8000.');
       return;
     }
 
     setConfirmedX(parsedX);
     setConfirmedY(parsedY);
     setCoordinatesConfirmed(true);
+    setInputMode(false);
+  };
+
+  const handleReenterButtonClick = () => {
+    setInputMode(true);
   };
 
   const handlePredictButtonClick = () => {
     fetchPredictData();
   };
 
+  const overlayStyle = {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: loading ? 'flex' : 'none',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column', // Stack items vertically
+    textAlign: 'center', // Center text
+  };
+
   const redDotStyle = {
     position: 'absolute',
     width: '10px',
     height: '10px',
-    borderRadius: '50%',
     backgroundColor: 'red',
-    top: `${confirmedY}px`,
-    left: `${confirmedX}px`,
+    top: `${confirmedY / 20}px`,
+    left: `${confirmedX / 20}px`,
     transform: 'translate(-50%, -50%)',
   };
 
   const fetchPredictData = async () => {
+    setLoading(true);
     const token = localStorage.getItem('token');
     if (props.filesForServer && props.filesForServer.fileNameHDR) {
       try {
@@ -62,12 +82,14 @@ function SelectArea(props) {
             responseType: 'arraybuffer',
           }
         );
-  
+
         const blob = new Blob([response.data], { type: 'image/png' });
         setPredictBlob(blob);
         setButtonPopup(true);
       } catch (error) {
-        console.log('Lỗi khi lấy dữ liệu dự đoán:' + error.message);
+        console.log('Error fetching prediction data: ' + error.message);
+      } finally {
+        setLoading(false);
       }
     } else {
       console.log(props.filesForServer);
@@ -77,46 +99,69 @@ function SelectArea(props) {
   return props.trigger ? (
     <div className="popup-SA">
       <div className="popup-inner-SA">
-        <h2>Đây là Xem trước của bạn</h2>
-        <div className="image-container" style={{ position: 'relative', width: '800px', height: '800px', backgroundColor: 'transparent', marginTop: '20px', marginBottom: '80px' }}>
-          {props.children}
-          {confirmedX !== null && confirmedY !== null && (
-            <div style={redDotStyle}></div>
-          )}
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div className="image-container" style={{ position: 'relative', marginTop: '40px', marginLeft: '40px', width: '300px', height: '400px', backgroundColor: 'transparent' }}>
+            {props.children}
+            {confirmedX !== null && confirmedY !== null && (
+              <div style={redDotStyle}></div>
+            )}
+          </div>
+
+          <div style={{ width: '50%', padding: '20px' }}>
+            <h2
+              style={{
+                textAlign: 'center',
+                marginBottom: '20px',
+              }}
+            >Here is your Preview Image!</h2>
+            <h3>Please input the coordinates values to select a particular area!</h3>
+            <h4>Note: The red dot is your selected area!</h4>
+            <div>
+              <label htmlFor="xInput">X:</label>
+              <input
+                type="number"
+                id="xInput"
+                value={xValue}
+                onChange={(e) => setXValue(e.target.value)}
+                disabled={!inputMode}
+              />
+            </div>
+            <div>
+              <label htmlFor="yInput">Y:</label>
+              <input
+                type="number"
+                id="yInput"
+                value={yValue}
+                onChange={(e) => setYValue(e.target.value)}
+                disabled={!inputMode}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+              {inputMode ? (
+                <button onClick={handleConfirmButtonClick}>Confirm</button>
+              ) : (
+                <button onClick={handleReenterButtonClick}>Re-enter</button>
+              )}
+              <button onClick={handlePredictButtonClick}>Predict</button>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <h3>Please input the coordinates values to Select a particular Area!</h3>
-          <h4>Note: The Red dot is your Selected Area!</h4>
-          <label htmlFor="xInput">X:</label>
-          <input
-            type="number"
-            id="xInput"
-            value={xValue}
-            onChange={(e) => setXValue(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="yInput">Y:</label>
-          <input
-            type="number"
-            id="yInput"
-            value={yValue}
-            onChange={(e) => setYValue(e.target.value)}
-          />
-        </div>
-        {coordinatesConfirmed ? (
-          <button onClick={handlePredictButtonClick}>Predict</button>
-        ) : (
-          <button onClick={handleConfirmButtonClick}>Confirm</button>
-        )}
         <button className="close-btn-SA" onClick={() => props.setTrigger(false)}></button>
       </div>
+
+      <div style={overlayStyle}>
+        {loading && 
+          <div className='loading-spinner'> 
+          </div>
+        }
+        <p style={{color: 'white', marginTop: '20px', fontSize:'1.5rem'}}>Just a moment...</p>
+        </div>
+
       <Result trigger={buttonPopup} setTrigger={setButtonPopup}>
         {predictBlob && (
           <div>
-            {/* Hiển thị hình ảnh từ Blob */}
-            <img src={URL.createObjectURL(predictBlob)} alt="Dự đoán" style={{ maxWidth: '100%', height: 'auto' }} />
+            <img src={URL.createObjectURL(predictBlob)} alt="Prediction" style={{ width: '400px', height: '400px' }} />
           </div>
         )}
       </Result>

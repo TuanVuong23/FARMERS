@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import SelectArea from './SelectArea';
 import api from './api';
+import './Preview.css';
 
 function Preview(props) {
   const [buttonPopup, setButtonPopup] = useState(false);
   const [previewBlob, setPreviewBlob] = useState(null);
   const [filesForSelectArea, setFilesForSelectArea] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const overlayStyle = {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: isLoading ? 'flex' : 'none',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column', 
+    textAlign: 'center',
+  };
 
   useEffect(() => {
     setFilesForSelectArea(props.filesForServer);
   }, [props.filesForServer]);
 
   const fetchPreviewData = async () => {
-    setLoading(true);
-
     const token = localStorage.getItem('token');
+    setIsLoading(true); 
     try {
       const response = await api.post(
         '/file/preview',
@@ -39,51 +53,64 @@ function Preview(props) {
       console.error('Error fetching preview data', error);
       alert('Error fetching preview data');
     } finally {
-      setLoading(false);
+      setIsLoading(false); 
     }
   };
 
-  return (
-    props.trigger && (
-      <div className="popup-preview">
-        <div className="popup-inner-preview">
-          <button className="close-btn-preview" onClick={() => props.setTrigger(false)}></button>
-          {props.children}
-          <button
-            onClick={fetchPreviewData}
-            className="preview"
-            style={{
-              backgroundColor: '#4CAF50',
-              border: 'none',
-              color: 'white',
-              padding: '15px 32px',
-              textAlign: 'center',
-              textDecoration: 'none',
-              display: 'inline-block',
-              fontSize: '16px',
-              margin: '4px 2px',
-              cursor: 'pointer',
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            Preview
-          </button>
-          {loading && <div className="loading-spinner"></div>}
+  return (props.trigger) ? (
+    <div className="popup-pre">
+      <div className="popup-inner-pre">
+        <button className="close-btn-pre" onClick={() => props.setTrigger(false)}>x</button>
+        {props.children}
+  
+        <div style={{ textAlign: 'center' }}>
+          <h1 style={{ color: '#00563B', marginBottom: '10px'}}>Select File Successfully!</h1>
+          <h3>Are you ready to see your Preview?</h3>
         </div>
-
-        <SelectArea filesForServer={filesForSelectArea} trigger={buttonPopup} setTrigger={setButtonPopup}>
-          {previewBlob && (
-            <div>
-              <img src={URL.createObjectURL(previewBlob)} alt="Preview" style={{ maxWidth: '100%', height: '100%' }} />
-            </div>
-          )}
-        </SelectArea>
+  
+        <button
+          onClick={fetchPreviewData}
+          className="btn-preview"
+          style={{
+            backgroundColor: '#00563B',
+            marginTop: '100px',
+            border: 'none',
+            color: 'white',
+            padding: '15px 32px',
+            textAlign: 'center',
+            textDecoration: 'none',
+            display: 'inline-block',
+            fontSize: '16px',
+            margin: '4px 2px',
+            cursor: 'pointer',
+            position: 'absolute',
+            top: '70%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            borderRadius: '10px',
+          }}
+        >
+          Preview
+        </button>
       </div>
-    )
-  );
+  
+      <SelectArea filesForServer={filesForSelectArea} trigger={buttonPopup} setTrigger={setButtonPopup}>
+        {previewBlob && (
+          <div>
+            <img src={URL.createObjectURL(previewBlob)} alt="Preview" style={{ width: '400px', height: '400px' }} />
+          </div>
+        )}
+      </SelectArea>
+      <div style={overlayStyle}>
+      {isLoading && 
+        <div className='loading-spinner'> 
+        </div>
+      }
+      <p style={{color: 'white', marginTop: '20px', fontSize:'1.5rem'}}>Just a moment...</p>
+      </div>
+    </div>
+  ) : null
+  
 }
 
 export default Preview;

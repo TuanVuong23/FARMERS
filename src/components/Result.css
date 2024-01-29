@@ -52,3 +52,18 @@
   .popup-inner .close-btn:after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+
+  .result-content {
+    display: flex;
+    
+  }
+  
+  .image-container {
+    flex: 1;
+    padding: 10px; /* Adjust as needed */
+  }
+  
+  .text-container {
+    flex: 1;
+    padding: 10px; /* Adjust as needed */
+  }
