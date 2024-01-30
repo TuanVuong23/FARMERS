@@ -100,7 +100,7 @@ function SelectArea(props) {
     <div className="popup-SA">
       <div className="popup-inner-SA">
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div className="image-container" style={{ position: 'relative', marginTop: '40px', marginLeft: '40px', width: '300px', height: '400px', backgroundColor: 'transparent' }}>
+          <div className="image-container" style={{ position: 'relative', marginTop: '40px', marginLeft: '40px', width: '400px', height: '400px', backgroundColor: 'transparent' }}>
             {props.children}
             {confirmedX !== null && confirmedY !== null && (
               <div style={redDotStyle}></div>

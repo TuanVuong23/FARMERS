@@ -21,7 +21,7 @@ function Result(props) {
                   color: 'white',
                   padding: '10px 20px',
                   border: 'none',
-                  borderRadius: '20px',
+                  borderRadius: '10px',
                   cursor: 'pointer',
                   transition: '0.3s',
                   fontSize: '16px',

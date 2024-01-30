@@ -16,6 +16,8 @@ export const Upload = () => {
   const [isUploadingHdr, setIsUploadingHdr] = useState(false);
   const [uploadFinished, setUploadFinished] = useState(false);
   const [buttonPopup, setButtonPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
+
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -42,8 +44,9 @@ export const Upload = () => {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": 'multipart/form-data',
-        },
-      });
+        }
+      }
+      );
 
       setUploadedImageUrl(URL.createObjectURL(image));
 
@@ -54,7 +57,10 @@ export const Upload = () => {
       
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
+  
   };
 
   return (
@@ -69,7 +75,7 @@ export const Upload = () => {
           >
             <input
               type="file"
-              accept=".zip"
+              accept=".zip, .img, .pdf"
               className="input-img"
               hidden
               onChange={({ target: { files } }) => {
@@ -124,7 +130,6 @@ export const Upload = () => {
       </div>
 
       <div>
-        {/*CHeck xem token */}
         {token ? (
           <>
             <button onClick={() => { uploadFile(); setButtonPopup(true); }} className="upload">Upload</button>
